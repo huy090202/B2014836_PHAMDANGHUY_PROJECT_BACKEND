@@ -1,6 +1,7 @@
 const DocGia = require("../models/DocGiaModel");
 const NhanVien = require("../models/NhanVienModel");
 const NhaXuatBan = require("../models/NhaXuatBanModel");
+const Sach = require("../models/SachModel");
 const bcrypt = require("bcrypt");
 
 // Đăng ký tài khoản
@@ -121,11 +122,13 @@ const deleteTK = (maSo) => {
       const KTNV = await NhanVien.findOne({ MSNV: maSo });
       const KTDG = await DocGia.findOne({ MaDocGia: maSo });
       const KTNXB = await NhaXuatBan.findOne({ MaNXB: maSo });
+      const KTSach = await Sach.findOne({ MaSach: maSo });
 
-      if (!KTNV || !KTDG || !KTNXB) {
+      if (!KTNV || !KTDG || !KTNXB || !KTSach) {
         resolve({
           status: "ERROR",
-          message: "Đọc giả hoặc nhân viên hoặc nhà xuất bản không tồn tại",
+          message:
+            "Đọc giả hoặc nhân viên hoặc nhà xuất bản hoặc sách không tồn tại",
         });
       }
 
@@ -135,6 +138,8 @@ const deleteTK = (maSo) => {
         await DocGia.findOneAndDelete(maSo);
       } else if (KTNXB) {
         await NhaXuatBan.findOneAndDelete(maSo);
+      } else if (KTSach) {
+        await Sach.findOneAndDelete(maSo);
       }
 
       resolve({
