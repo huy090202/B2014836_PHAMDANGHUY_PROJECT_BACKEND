@@ -2,6 +2,12 @@ const mongoose = require("mongoose");
 
 const TheoDoiMuonSachSchema = new mongoose.Schema(
   {
+    MaTDMS: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      auto: true,
+      primaryKey: true,
+    },
     MaDocGia: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "DocGia",
@@ -12,7 +18,7 @@ const TheoDoiMuonSachSchema = new mongoose.Schema(
       ref: "Sach",
       required: true,
     },
-    NgayMuon: { type: Date, required: true, primaryKey: true },
+    NgayMuon: { type: Date, required: true },
     NgayTra: { type: Date, required: true },
   },
   {
@@ -28,4 +34,5 @@ const TheoDoiMuonSach = mongoose.model(
   "TheoDoiMuonSach",
   TheoDoiMuonSachSchema
 );
+
 module.exports = TheoDoiMuonSach;
