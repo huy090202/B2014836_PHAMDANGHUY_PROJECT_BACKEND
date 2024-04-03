@@ -8,9 +8,10 @@ const SachSchema = new mongoose.Schema(
       auto: true,
       primaryKey: true,
     },
-    TenSach: { type: String, required: true },
+    TenSach: { type: String, required: true, unique: true },
+    HinhAnh: { type: Buffer, maxlength: 16 * 1024 * 1024, default: null },
     DonGia: { type: Number, required: true },
-    SoQuyen: { type: Number, required: true },
+    SoQuyen: { type: Number, required: true, default: 1 },
     NamXuatBan: { type: String, required: true },
     MaNXB: {
       type: mongoose.Schema.Types.ObjectId,
