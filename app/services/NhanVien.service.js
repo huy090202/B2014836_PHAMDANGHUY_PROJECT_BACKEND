@@ -116,7 +116,7 @@ const updateRoleNV = (msnv, chucVu) => {
 };
 
 // Xóa tài khoản
-const deleteTK = (maSo) => {
+const deleteByMaSo = (maSo) => {
   return new Promise(async (resolve, reject) => {
     try {
       const KTNV = await NhanVien.findOne({ MSNV: maSo });
@@ -179,4 +179,4 @@ const getAllNV = (maNV) => {
   });
 };
 
-module.exports = { signUp, signIn, updateRoleNV, deleteTK, getAllNV };
+module.exports = { signUp, signIn, updateRoleNV, deleteByMaSo, getAllNV };

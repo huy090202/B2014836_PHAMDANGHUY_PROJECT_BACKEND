@@ -98,10 +98,10 @@ const updateRoleNV = async (req, res) => {
 };
 
 // Xóa tài khoản
-const deleteTK = async (req, res) => {
+const deleteByMaSo = async (req, res) => {
   try {
     const { MaSo } = req.params;
-    const response = await NhanVienService.deleteTK(MaSo);
+    const response = await NhanVienService.deleteByMaSo(MaSo);
     return res.status(200).json(response);
   } catch (e) {
     console.log(e);
@@ -134,6 +134,6 @@ module.exports = {
   signIn,
   logOut,
   updateRoleNV,
-  deleteTK,
+  deleteByMaSo,
   getAllNV,
 };

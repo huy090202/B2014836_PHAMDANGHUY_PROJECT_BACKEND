@@ -10,7 +10,7 @@ router.get("/logOut", NhanVienController.logOut);
 
 router.put("/update/:MSNV", NhanVienController.updateRoleNV);
 
-router.delete("/delete/:MaSo", NhanVienController.deleteTK);
+router.delete("/delete/:MaSo", NhanVienController.deleteByMaSo);
 
 router.get("/allNV", NhanVienController.getAllNV);
 
