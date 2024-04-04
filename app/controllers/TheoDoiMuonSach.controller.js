@@ -7,26 +7,29 @@ const createTDMS = async (req, res) => {
     return res.status(200).json(response);
   } catch (e) {
     console.log(e);
-    return res
-      .status(500)
-      .json({ message: "Ngày trả sách phải sau ngày mượn sách" });
+    return res.status(500).json({ message: "Lỗi phía máy chủ" });
   }
 };
 
 // Cập nhật thông tin theo dõi mượn sách
 const updateTDMS = async (req, res) => {
   try {
-    const { MaTDMS } = req.params;
-    const { NgayTra } = req.body;
+    const { MaDocGia, MaSach, NgayMuon } = req.query;
+    const { TrangThai } = req.body;
 
-    if (!MaTDMS) {
+    if (!MaDocGia || !MaSach || !NgayMuon) {
       return res.status(200).json({
         status: "ERROR",
-        message: "Mã theo dõi mượn sách không được để trống",
+        message: "Mã độc giả, mã sách và ngày mượn không được để trống",
       });
     }
 
-    const response = await TheoDoiMuonSachService.updateTDMS(MaTDMS, NgayTra);
+    const response = await TheoDoiMuonSachService.updateTDMS(
+      MaDocGia,
+      MaSach,
+      NgayMuon,
+      TrangThai
+    );
 
     if (response.status === "OK") {
       return res.status(200).json(response);
@@ -45,15 +48,20 @@ const updateTDMS = async (req, res) => {
 // Chi tiết theo dõi mượn sách
 const detailTDMS = async (req, res) => {
   try {
-    const maTDMS = req.query.MaTDMS;
-    if (!maTDMS) {
+    const { MaDocGia, MaSach, NgayMuon } = req.query;
+
+    if (!MaDocGia || !MaSach) {
       return res.status(200).json({
         status: "ERROR",
-        message: "Mã theo dõi mượn sách không được để trống",
+        message: "Mã độc giả, mã sách và ngày mượn không được để trống",
       });
     }
 
-    const response = await TheoDoiMuonSachService.detailTDMS(maTDMS);
+    const response = await TheoDoiMuonSachService.detailTDMS(
+      MaDocGia,
+      MaSach,
+      NgayMuon
+    );
     return res.status(200).json(response);
   } catch (e) {
     console.log(e);
@@ -64,16 +72,21 @@ const detailTDMS = async (req, res) => {
 // Lấy danh sách theo dõi mượn sách
 const getAllTDMS = async (req, res) => {
   try {
-    const maTDMS = req.query.MaTDMS;
-    if (!maTDMS) {
+    const { MaDocGia, MaSach, NgayMuon } = req.query;
+
+    if (!MaDocGia && !MaSach && !NgayMuon) {
       return res.status(200).json({
         status: "ERROR",
-        message: "Mã theo dõi mượn sách không được để trống",
+        message: "Mã độc giả hoặc mã sách hoặc ngày mượn không được để trống",
         getAllTDMS: [],
       });
     }
 
-    const response = await TheoDoiMuonSachService.getAllTDMS(maTDMS);
+    const response = await TheoDoiMuonSachService.getAllTDMS(
+      MaDocGia,
+      MaSach,
+      NgayMuon
+    );
     return res.status(200).json(response);
   } catch (e) {
     console.log(e);

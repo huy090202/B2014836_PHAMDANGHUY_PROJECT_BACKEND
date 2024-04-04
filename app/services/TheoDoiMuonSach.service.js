@@ -3,12 +3,19 @@ const TheoDoiMuonSach = require("../models/TheoDoiMuonSachModel");
 // Tạo mới một theo dõi mượn sách
 const createTDMS = (data) => {
   return new Promise(async (resolve, reject) => {
-    const { MaDocGia, MaSach, NgayMuon, NgayTra } = data;
+    const { MaDocGia, MaSach, TrangThai, NgayMuon, NgayTra } = data;
 
     try {
+      let trangThai = "Đang mượn";
+
+      if (TrangThai === true || trangThai === "Đã trả") {
+        trangThai = "Đã trả";
+      }
+
       const newTDMS = await TheoDoiMuonSach.create({
         MaDocGia,
         MaSach,
+        TrangThai: trangThai,
         NgayMuon,
         NgayTra,
       });
@@ -27,12 +34,18 @@ const createTDMS = (data) => {
 };
 
 // Cập nhật thông tin theo dõi mượn sách
-const updateTDMS = (maTDMS, ngayTra) => {
+const updateTDMS = (maDG, maSach, ngayMuon, trangThai) => {
   return new Promise(async (resolve, reject) => {
     try {
       const CapNhatTDMS = await TheoDoiMuonSach.findOneAndUpdate(
-        { MaTDMS: maTDMS },
-        { $set: { NgayTra: ngayTra } },
+        {
+          MaDocGia: maDG,
+          MaSach: maSach,
+          NgayMuon: ngayMuon,
+        },
+        {
+          TrangThai: trangThai,
+        },
         {
           new: true,
           useFindAndModify: false,
@@ -58,17 +71,21 @@ const updateTDMS = (maTDMS, ngayTra) => {
 };
 
 // Chi tiết theo dõi mượn sách
-const detailTDMS = (maTDMS) => {
+const detailTDMS = (maDG, maSach, ngayMuon) => {
   return new Promise(async (resolve, reject) => {
     try {
-      if (!maTDMS) {
+      if (!maDG || !maSach || !ngayMuon) {
         resolve({
           status: "ERROR",
           message: "Theo dõi mượn sách không tồn tại",
         });
       }
 
-      const detailTDMS = await TheoDoiMuonSach.findOne({ MaTDMS: maTDMS });
+      const detailTDMS = await TheoDoiMuonSach.findOne({
+        MaDocGia: maDG,
+        MaSach: maSach,
+        NgayMuon: ngayMuon,
+      });
 
       resolve({
         status: "OK",
@@ -82,19 +99,31 @@ const detailTDMS = (maTDMS) => {
 };
 
 // Lấy danh sách theo dõi mượn sách
-const getAllTDMS = (maTDMS) => {
+const getAllTDMS = (maDG, maSach, ngayMuon) => {
   return new Promise(async (resolve, reject) => {
     try {
       let allTDMS = "";
-      if (maTDMS && maTDMS === "All") {
+      if (
+        (maDG && maDG === "All") ||
+        (maSach && maSach === "All") ||
+        (ngayMuon && ngayMuon === "All")
+      ) {
         allTDMS = await TheoDoiMuonSach.find({}).sort({
           createdAt: -1,
           updatedAt: -1,
         });
       }
 
-      if (maTDMS && maTDMS !== "All") {
-        allTDMS = await TheoDoiMuonSach.findOne({ MaTDMS: maTDMS });
+      if (
+        (maDG && maDG !== "All") ||
+        (maSach && maSach !== "All") ||
+        (ngayMuon && ngayMuon !== "All")
+      ) {
+        allTDMS = await TheoDoiMuonSach.findOne({
+          MaDocGia: maDG,
+          MaSach: maSach,
+          NgayMuon: ngayMuon,
+        });
       }
 
       resolve({
