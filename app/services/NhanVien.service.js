@@ -3,6 +3,7 @@ const NhanVien = require("../models/NhanVienModel");
 const NhaXuatBan = require("../models/NhaXuatBanModel");
 const Sach = require("../models/SachModel");
 const bcrypt = require("bcrypt");
+const { genneralAccessToken } = require("./jwt.service");
 
 // Đăng ký tài khoản
 const signUp = (data) => {
@@ -47,7 +48,7 @@ const signUp = (data) => {
 };
 
 // Đăng nhập tài khoản
-const signIn = (data, res) => {
+const signIn = (data) => {
   return new Promise(async (resolve, reject) => {
     const { DienThoai, Password } = data;
 
@@ -71,10 +72,14 @@ const signIn = (data, res) => {
           message: "Mật khẩu không chính xác",
         });
       } else {
-        res.cookie("token", CheckTaiKhoan.MSNV, { httpOnly: true });
+        const access_token = await genneralAccessToken({
+          id: CheckTaiKhoan.id,
+        });
+
         resolve({
           status: "OK",
           message: "Đăng nhập thành công",
+          access_token,
           data: CheckTaiKhoan,
         });
       }

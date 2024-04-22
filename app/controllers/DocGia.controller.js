@@ -46,8 +46,17 @@ const signIn = async (req, res) => {
       });
     }
 
-    const response = await DocGiaService.signIn(req.body, res);
-    return res.status(200).json(response);
+    const response = await DocGiaService.signIn(req.body);
+
+    const { access_token, ...newReponse } = response;
+    res.cookie("access_token", access_token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "strict",
+      path: "/",
+    });
+
+    return res.status(200).json({ ...newReponse, access_token });
   } catch (e) {
     console.log(e);
     res.status(500).json({ message: "Lỗi phía máy chủ" });
@@ -57,7 +66,7 @@ const signIn = async (req, res) => {
 // Đăng xuất tài khoản
 const logOut = (res) => {
   try {
-    res.clearCookie("token");
+    res.clearCookie("access_token");
     return {
       status: "OK",
       message: "Đăng xuất thành công",

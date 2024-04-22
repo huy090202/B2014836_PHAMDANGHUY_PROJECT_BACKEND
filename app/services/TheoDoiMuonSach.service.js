@@ -6,6 +6,14 @@ const createTDMS = (data) => {
     const { MaDocGia, MaSach, TrangThai, NgayMuon, NgayTra } = data;
 
     try {
+      if (NgayMuon >= NgayTra) {
+        resolve({
+          status: "ERROR",
+          message: "Ngày trả sách phải sau ngày mượn sách",
+          data: {}
+        });
+      }
+
       let trangThai = "Đang mượn";
 
       if (TrangThai === true || trangThai === "Đã trả") {

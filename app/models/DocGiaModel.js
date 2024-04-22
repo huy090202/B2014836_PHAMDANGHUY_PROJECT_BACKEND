@@ -10,7 +10,7 @@ const DocGiaSchema = new mongoose.Schema(
     },
     HoLot: { type: String, required: true },
     Ten: { type: String, required: true },
-    NgaySinh: { type: Date, required: true },
+    NgaySinh: { type: Date},
     Phai: { type: String, enum: ["Nam", "Nữ"], default: "Nữ" },
     DiaChi: { type: String },
     DienThoai: { type: Number, required: true, unique: true },

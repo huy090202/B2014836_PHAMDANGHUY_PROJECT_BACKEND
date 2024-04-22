@@ -1,10 +1,11 @@
 const DocGia = require("../models/DocGiaModel");
 const bcrypt = require("bcrypt");
+const { genneralAccessToken } = require("./jwt.service");
 
 // Dăng ký tài khoản
 const signUp = (data) => {
   return new Promise(async (resolve, reject) => {
-    const { HoLot, Ten, NgaySinh, Phai, DiaChi, DienThoai, Password } = data;
+    const { HoLot, Ten, DienThoai, Password } = data;
 
     try {
       const CheckTaiKhoan = await DocGia.findOne({ DienThoai: DienThoai });
@@ -16,20 +17,11 @@ const signUp = (data) => {
         });
       }
 
-      let phai = "Nữ";
-
-      if (Phai === true || Phai === "Nam") {
-        phai = "Nam";
-      }
-
       const hash = bcrypt.hashSync(Password, 10);
 
       const TaiKhoanMoi = await DocGia.create({
         HoLot,
         Ten,
-        NgaySinh,
-        Phai: phai,
-        DiaChi,
         DienThoai,
         Password: hash,
       });
@@ -48,7 +40,7 @@ const signUp = (data) => {
 };
 
 // Đăng nhập tài khoản
-const signIn = (data, res) => {
+const signIn = (data) => {
   return new Promise(async (resolve, reject) => {
     const { DienThoai, Password } = data;
 
@@ -72,10 +64,14 @@ const signIn = (data, res) => {
           message: "Mật khẩu không đúng",
         });
       } else {
-        res.cookie("token", CheckTaiKhoan.MaDocGia, { httpOnly: true });
+        const access_token = await genneralAccessToken({
+          id: CheckTaiKhoan.id,
+        });
+
         resolve({
           status: "OK",
           message: "Đăng nhập thành công",
+          access_token,
           data: CheckTaiKhoan,
         });
       }
