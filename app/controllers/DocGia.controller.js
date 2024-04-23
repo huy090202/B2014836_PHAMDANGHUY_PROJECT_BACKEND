@@ -114,7 +114,7 @@ const updateDG = async (req, res) => {
 // Chi tiết đọc giả
 const detailDG = async (req, res) => {
   try {
-    const maDG = req.query.MaDocGia;
+    const maDG = req.params.MaDocGia;
     if (!maDG) {
       return res.status(200).json({
         status: "ERROR",

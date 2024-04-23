@@ -3,7 +3,7 @@ const Sach = require("../models/SachModel");
 // Thêm sách
 const addSach = async (data) => {
   return new Promise(async (resolve, reject) => {
-    const { TenSach, DonGia, SoQuyen, NamXuatBan, MaNXB, TacGia } = data;
+    const { TenSach, DonGia, SoQuyen, NamXuatBan, MaNXB, TacGia, HinhAnh } = data;
 
     try {
       const SachMoi = await Sach.create({
@@ -13,6 +13,7 @@ const addSach = async (data) => {
         NamXuatBan,
         MaNXB,
         TacGia,
+        HinhAnh,
       });
 
       if (SachMoi) {
@@ -72,19 +73,12 @@ const detailSach = (maSach) => {
 
       const detailSach = await Sach.findOne({ MaSach: maSach });
 
-      let HinhAnhBase64 = "";
-      if (detailSach.HinhAnh) {
-        HinhAnhBase64 = new Buffer(detailSach.HinhAnh, "base64").toString(
-          "binary"
-        );
-      }
-
       resolve({
         status: "OK",
         message: "Lấy thông tin sách thành công",
         data: detailSach,
-        HinhAnhBase64,
       });
+
     } catch (e) {
       reject(e);
     }
@@ -101,7 +95,14 @@ const getAllSach = (maSach) => {
       }
 
       if (maSach && maSach !== "All") {
-        allSach = await Sach.findOne({ MaSach: maSach });
+
+        const exactBook = await Sach.findOne({ TenSach: maSach });
+
+        if (exactBook) {
+          allSach = [exactBook];
+        } else {
+          allSach = await Sach.findOne({ $text: { $search: maSach } });
+        }
       }
 
       resolve({

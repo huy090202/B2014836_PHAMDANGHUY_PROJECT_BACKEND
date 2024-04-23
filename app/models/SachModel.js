@@ -9,7 +9,7 @@ const SachSchema = new mongoose.Schema(
       primaryKey: true,
     },
     TenSach: { type: String, required: true, unique: true },
-    HinhAnh: { type: Buffer, maxlength: 16 * 1024 * 1024, default: null },
+    HinhAnh: { type: String },
     DonGia: { type: Number, required: true },
     SoQuyen: { type: Number, required: true, default: 1 },
     NamXuatBan: { type: String, required: true },

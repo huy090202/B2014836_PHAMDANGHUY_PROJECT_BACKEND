@@ -15,7 +15,7 @@ const createTDMS = async (req, res) => {
 const updateTDMS = async (req, res) => {
   try {
     const { MaDocGia, MaSach, NgayMuon } = req.query;
-    const { TrangThai } = req.body;
+    const data = req.body;
 
     if (!MaDocGia || !MaSach || !NgayMuon) {
       return res.status(200).json({
@@ -28,7 +28,7 @@ const updateTDMS = async (req, res) => {
       MaDocGia,
       MaSach,
       NgayMuon,
-      TrangThai
+      data
     );
 
     if (response.status === "OK") {

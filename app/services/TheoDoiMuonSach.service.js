@@ -14,7 +14,7 @@ const createTDMS = (data) => {
         });
       }
 
-      let trangThai = "Đang mượn";
+      let trangThai = "Chờ xác nhận";
 
       if (TrangThai === true || trangThai === "Đã trả") {
         trangThai = "Đã trả";
@@ -42,7 +42,7 @@ const createTDMS = (data) => {
 };
 
 // Cập nhật thông tin theo dõi mượn sách
-const updateTDMS = (maDG, maSach, ngayMuon, trangThai) => {
+const updateTDMS = (maDG, maSach, ngayMuon, data) => {
   return new Promise(async (resolve, reject) => {
     try {
       const CapNhatTDMS = await TheoDoiMuonSach.findOneAndUpdate(
@@ -52,7 +52,7 @@ const updateTDMS = (maDG, maSach, ngayMuon, trangThai) => {
           NgayMuon: ngayMuon,
         },
         {
-          TrangThai: trangThai,
+          data,
         },
         {
           new: true,
@@ -119,19 +119,15 @@ const getAllTDMS = (maDG, maSach, ngayMuon) => {
         allTDMS = await TheoDoiMuonSach.find({}).sort({
           createdAt: -1,
           updatedAt: -1,
-        });
+        })
       }
 
       if (
-        (maDG && maDG !== "All") ||
-        (maSach && maSach !== "All") ||
-        (ngayMuon && ngayMuon !== "All")
+        (maDG && maDG !== "All")
       ) {
         allTDMS = await TheoDoiMuonSach.findOne({
           MaDocGia: maDG,
-          MaSach: maSach,
-          NgayMuon: ngayMuon,
-        });
+        })
       }
 
       resolve({

@@ -10,6 +10,8 @@ router.get("/logOut", NhanVienController.logOut);
 
 router.put("/update/:MSNV", NhanVienController.updateRoleNV);
 
+router.get("/detailNV/:MSNV", NhanVienController.detailNV);
+
 router.delete("/delete/:MaSo", NhanVienController.deleteByMaSo);
 
 router.get("/allNV", NhanVienController.getAllNV);

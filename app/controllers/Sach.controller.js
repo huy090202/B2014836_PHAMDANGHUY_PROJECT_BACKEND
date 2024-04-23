@@ -43,7 +43,7 @@ const updateSach = async (req, res) => {
 // Chi tiết sách
 const detailSach = async (req, res) => {
   try {
-    const maSach = req.query.MaSach;
+    const maSach = req.params.MaSach;
     if (!maSach) {
       return res.status(200).json({
         status: "ERROR",

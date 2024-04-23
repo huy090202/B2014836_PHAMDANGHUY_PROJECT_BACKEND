@@ -81,7 +81,7 @@ const logOut = (res) => {
 const updateRoleNV = async (req, res) => {
   try {
     const { MSNV } = req.params;
-    const { ChucVu } = req.body;
+    const data = req.body;
 
     if (!MSNV) {
       return res.status(400).json({
@@ -90,7 +90,7 @@ const updateRoleNV = async (req, res) => {
       });
     }
 
-    const response = await NhanVienService.updateRoleNV(MSNV, ChucVu);
+    const response = await NhanVienService.updateRoleNV(MSNV, data);
 
     if (response.status === "OK") {
       return res.status(200).json(response);
@@ -103,6 +103,28 @@ const updateRoleNV = async (req, res) => {
   } catch (e) {
     console.log(e);
     return res.status(500).json({ message: "Lỗi phía máy chủ" });
+  }
+};
+
+// Chi tiết nhân viên
+const detailNV = async (req, res) => {
+  try {
+    const maNV = req.params.MSNV;
+    if (!maNV) {
+      return res.status(200).json({
+        status: "ERROR",
+        message: "Mã nhân viên không được để trống",
+      });
+    }
+
+    const response = await NhanVienService.detailNV(maNV);
+    return res.status(200).json(response);
+  } catch (e) {
+    console.log(e);
+    return res.status(404).json({
+      status: "ERROR",
+      message: "Lỗi phía máy chủ",
+    });
   }
 };
 
@@ -145,4 +167,5 @@ module.exports = {
   updateRoleNV,
   deleteByMaSo,
   getAllNV,
+  detailNV
 };

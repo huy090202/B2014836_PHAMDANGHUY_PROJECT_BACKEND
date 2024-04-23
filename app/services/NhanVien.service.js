@@ -90,12 +90,12 @@ const signIn = (data) => {
 };
 
 // Cập nhật thông tin đọc giả
-const updateRoleNV = (msnv, chucVu) => {
+const updateRoleNV = (msnv, data) => {
   return new Promise(async (resolve, reject) => {
     try {
       const CapNhatQuyen = await NhanVien.findOneAndUpdate(
         { MSNV: msnv },
-        { ChucVu: chucVu },
+        data,
         {
           new: true,
           useFindAndModify: false,
@@ -113,6 +113,30 @@ const updateRoleNV = (msnv, chucVu) => {
         status: "OK",
         message: "Cập nhật quyền thành công",
         data: CapNhatQuyen,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+// Chi tiết nhân viên
+const detailNV = (maNV) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!maNV) {
+        resolve({
+          status: "ERROR",
+          message: "Nhân viên không tồn tại",
+        });
+      }
+
+      const detailNV = await NhanVien.findOne({ MSNV: maNV });
+
+      resolve({
+        status: "OK",
+        message: "Lấy thông tin nhân viên thành công",
+        data: detailNV,
       });
     } catch (e) {
       reject(e);
@@ -184,4 +208,4 @@ const getAllNV = (maNV) => {
   });
 };
 
-module.exports = { signUp, signIn, updateRoleNV, deleteByMaSo, getAllNV };
+module.exports = { signUp, signIn, updateRoleNV, deleteByMaSo, getAllNV, detailNV };

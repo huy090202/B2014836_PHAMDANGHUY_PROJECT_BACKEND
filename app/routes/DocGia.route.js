@@ -10,7 +10,7 @@ router.get("/logOut", DocGiaController.logOut);
 
 router.put("/update/:MaDocGia", DocGiaController.updateDG);
 
-router.get("/detailDG", DocGiaController.detailDG);
+router.get("/detailDG/:MaDocGia", DocGiaController.detailDG);
 
 router.get("/allDG", DocGiaController.getAllDG);
 

@@ -64,6 +64,29 @@ const updateNXB = (maNXB, data) => {
   });
 };
 
+const detailNXB = (maNXB) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!maNXB) {
+        resolve({
+          status: "ERROR",
+          message: "Nhà xuất bản không tồn tại",
+        });
+      }
+
+      const detailNXB = await NhaXuatBan.findOne({ MaNXB: maNXB });
+
+      resolve({
+        status: "OK",
+        message: "Lấy thông tin nhà xuất bản thành công",
+        data: detailNXB,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
 // Lấy danh sách nhà xuất bản
 const getAllNXB = (maNXB) => {
   return new Promise(async (resolve, reject) => {
@@ -91,4 +114,4 @@ const getAllNXB = (maNXB) => {
   });
 };
 
-module.exports = { createNXB, updateNXB, getAllNXB };
+module.exports = { createNXB, updateNXB, getAllNXB, detailNXB };

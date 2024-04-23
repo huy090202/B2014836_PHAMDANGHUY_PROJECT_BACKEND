@@ -16,8 +16,8 @@ const TheoDoiMuonSachSchema = new mongoose.Schema(
     },
     TrangThai: {
       type: String,
-      enum: ["Đang mượn", "Đã trả"],
-      default: "Đang mượn",
+      enum: ["Đang mượn", "Đã trả", "Chờ xác nhận"],
+      default: "Chờ xác nhận",
     },
     NgayMuon: { type: Date, required: true, primaryKey: true },
     NgayTra: { type: Date, required: true },

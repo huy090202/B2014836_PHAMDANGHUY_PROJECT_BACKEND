@@ -3,16 +3,16 @@ const NhaXuatBanService = require("../services/NhaXuatBan.service");
 // Tạo mới nhà xuất bản
 const createNXB = async (req, res) => {
   try {
-    const { TenNXB } = req.body;
+    const data = req.body;
 
-    if (!TenNXB) {
+    if (!data) {
       return res.status(400).json({
         status: "ERROR",
-        message: "Tên nhà xuất bản không được để trống",
+        message: "Tên nhà xuất bản và địa chỉ không được để trống",
       });
     }
 
-    const response = await NhaXuatBanService.createNXB(req.body);
+    const response = await NhaXuatBanService.createNXB(data);
     return res.status(200).json(response);
   } catch (e) {
     console.log(e);
@@ -48,6 +48,25 @@ const updateNXB = async (req, res) => {
   }
 };
 
+const detailNXB = async (req, res) => {
+  try {
+    const { MaNXB } = req.params;
+
+    if (!MaNXB) {
+      return res.status(400).json({
+        status: "ERROR",
+        message: "Mã nhà xuất bản không được để trống",
+      });
+    }
+
+    const response = await NhaXuatBanService.detailNXB(MaNXB);
+    return res.status(200).json(response);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ message: "Lỗi phía máy chủ" });
+  }
+};
+
 // Lấy danh sách nhà xuất bản
 const getAllNXB = async (req, res) => {
   try {
@@ -68,4 +87,4 @@ const getAllNXB = async (req, res) => {
   }
 };
 
-module.exports = { createNXB, updateNXB, getAllNXB };
+module.exports = { createNXB, updateNXB, getAllNXB, detailNXB };

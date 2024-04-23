@@ -6,7 +6,7 @@ router.post("/add", SachController.addSach);
 
 router.put("/update/:MaSach", SachController.updateSach);
 
-router.get("/detail", SachController.detailSach);
+router.get("/detail/:MaSach", SachController.detailSach);
 
 router.get("/all", SachController.getAllSach);
 
